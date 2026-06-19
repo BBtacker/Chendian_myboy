@@ -82,7 +82,7 @@ function Header() {
     <div className="header">
       <div className="header-left">
         <div className="header-title">
-          <h1>心影日记</h1>
+          <h1>MyDiary</h1>
           <p className="subtitle">记录生活点滴，珍藏美好回忆</p>
         </div>
       </div>

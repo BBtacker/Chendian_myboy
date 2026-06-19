@@ -98,7 +98,7 @@ function LoginPage() {
       <div className="login-container">
         <div className="login-header">
           <div className="app-icon">📝</div>
-          <h1 className="app-title">心影日记</h1>
+          <h1 className="app-title">MyDiary</h1>
           <p className="app-subtitle">记录生活点滴，分享美好回忆</p>
           <div className="app-slogan">珍藏每一个心动瞬间，让回忆永远鲜活</div>
         </div>

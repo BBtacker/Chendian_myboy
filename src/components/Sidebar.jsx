@@ -24,8 +24,8 @@ function Sidebar() {
     <div className="sidebar">
       <div className="sidebar-logo">
         <div className="logo-icon">
-          <img src={logo} alt="心影日记" className="logo-img" />
-        </div>
+          <img src={logo} alt="MyDiary" className="logo-img" />
+        <h3>MyDiary</h3></div>
         <h3>心影日记</h3>
       </div>
       <nav className="sidebar-nav">
