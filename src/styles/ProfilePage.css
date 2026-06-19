@@ -1,0 +1,602 @@
+/* ProfilePage.css */
+.profile-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 个人主页头部 */
+.profile-header {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.cover-photo {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #6366f1 100%);
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  background-repeat: no-repeat;
+}
+
+.cover-photo.no-cover {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #6366f1 100%);
+  background-image: none !important;
+}
+
+/* 封面图片上传样式 */
+.cover-upload-input {
+  display: none;
+}
+
+.cover-upload-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.cover-upload-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-section {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  position: relative;
+}
+
+.avatar-container {
+  position: relative;
+  margin-bottom: -50px;
+  z-index: 10;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+.avatar-upload-input {
+  display: none;
+}
+
+.avatar-upload-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-upload-btn:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.user-info {
+  flex: 1;
+  color: white;
+}
+
+.username {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.bio-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.bio {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+  max-width: 500px;
+}
+
+.edit-bio-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.edit-bio-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.bio-edit {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.bio-edit textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.bio-edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.save-btn, .cancel-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border-radius: 8px;
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(99, 102, 241, 0.35);
+}
+
+.cancel-btn {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+}
+
+.cancel-btn:hover {
+  background-color: #bdc3c7;
+}
+
+/* 统计数据 */
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.stat-divider {
+  width: 1px;
+  background-color: #e0e0e0;
+}
+
+/* 个人主页内容 */
+.profile-content {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.content-header h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.create-diary-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.create-diary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 15px;
+  }
+  
+  .cover-photo {
+    height: 150px;
+    padding: 15px;
+  }
+  
+  .avatar-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .avatar-container {
+    margin-bottom: 0;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .user-info {
+    color: #2c3e50;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .username {
+    font-size: 1.5rem;
+  }
+  
+  .bio {
+    color: #2c3e50;
+  }
+  
+  .edit-bio-btn {
+    background-color: #f1c40f;
+    color: white;
+    border: none;
+  }
+  
+  .stats-section {
+    gap: 20px;
+    padding: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    min-width: 80px;
+  }
+  
+  .stat-divider {
+    display: none;
+  }
+  
+  .profile-content {
+    padding: 20px;
+  }
+  
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .diary-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .diary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-section {
+    justify-content: space-around;
+  }
+}
+
+/* 统计图表样式 */
+.stats-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 100;
+  clear: both;
+}
+
+.chart-container {
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  padding: 20px;
+  position: relative;
+  z-index: 100;
+  overflow: hidden;
+  min-height: 400px;
+  margin-bottom: 20px;
+}
+
+.chart-container h4 {
+  margin: 0 0 15px 0;
+  color: #1e1b4b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.chart-container:first-child .chart-wrapper {
+  width: 500.9px;
+  height: 337px;
+  position: relative;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.chart-container:last-child .chart-wrapper {
+  width: 500px;
+  height: 320px;
+  position: relative;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+/* 响应式图表 */
+@media (max-width: 768px) {
+  .stats-charts {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .chart-container {
+    padding: 15px;
+  }
+  
+  .chart-container:first-child .chart-wrapper,
+  .chart-container:last-child .chart-wrapper {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container:first-child .chart-wrapper,
+  .chart-container:last-child .chart-wrapper {
+    height: 250px;
+  }
+}
+
+/* 日记网格 */
+.diary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  position: relative;
+  z-index: 1;
+  margin-top: 50px;
+  clear: both;
+  overflow: visible;
+}
+
+.diary-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  border: 1px solid #e0e0e0;
+}
+
+.diary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.diary-photo {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.diary-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.diary-card:hover .diary-photo img {
+  transform: scale(1.05);
+}
+
+.diary-info {
+  padding: 18px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.diary-title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+}
+
+.diary-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  z-index: 1;
+  position: relative;
+}
+
+.diary-date {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+.diary-mood {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background-color: rgba(99, 102, 241, 0.08);
+  border-radius: 15px;
+  font-size: 0.85rem;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+.mood-icon {
+  font-size: 1rem;
+}
+
+.diary-stats {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 10px;
+}
+
+.like-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.delete-diary-btn {
+  background: none;
+  border: none;
+  color: #95a5a6;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.delete-diary-btn:hover {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* 响应式日记网格 */
+@media (max-width: 768px) {
+  .diary-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .diary-grid {
+    grid-template-columns: 1fr;
+  }
+}

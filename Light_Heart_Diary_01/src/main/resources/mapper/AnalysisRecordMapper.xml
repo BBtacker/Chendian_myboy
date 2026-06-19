@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lhy.face_recognition.mapper.AnalysisRecordMapper">
+    
+    <!-- 结果映射 -->
+    <resultMap id="AnalysisRecordResultMap" type="com.lhy.face_recognition.entity.AnalysisRecord">
+        <id column="id" property="id" />
+        <result column="image_url" property="imageUrl" />
+        <result column="analysis_date" property="analysisDate" />
+        <result column="happy_count" property="happyCount" />
+        <result column="sad_count" property="sadCount" />
+        <result column="anger_count" property="angerCount" />
+        <result column="surprise_count" property="surpriseCount" />
+        <result column="fear_count" property="fearCount" />
+        <result column="neutral_count" property="neutralCount" />
+        <result column="disgust_count" property="disgustCount" />
+        <result column="contempt_count" property="contemptCount" />
+        <result column="sleepy_count" property="sleepyCount" />
+        <result column="dominant_expression" property="dominantExpression" />
+    </resultMap>
+    
+    <!-- 获取所有分析记录 -->
+    <select id="getAllRecords" resultMap="AnalysisRecordResultMap">
+        SELECT * FROM analysis_record ORDER BY analysis_date DESC
+    </select>
+    
+    <!-- 获取最新的分析记录 -->
+    <select id="getLatestRecords" resultMap="AnalysisRecordResultMap">
+        SELECT * FROM analysis_record ORDER BY analysis_date DESC LIMIT #{limit}
+    </select>
+    
+    <!-- 根据ID获取分析记录 -->
+    <select id="getRecordById" resultMap="AnalysisRecordResultMap">
+        SELECT * FROM analysis_record WHERE id = #{id}
+    </select>
+    
+    <!-- 根据日期范围获取分析记录 -->
+    <select id="getRecordsByDateRange" resultMap="AnalysisRecordResultMap">
+        SELECT * FROM analysis_record 
+        WHERE analysis_date BETWEEN #{startDate} AND #{endDate} 
+        ORDER BY analysis_date DESC
+    </select>
+    
+    <!-- 根据主要表情获取分析记录 -->
+    <select id="getRecordsByDominantExpression" resultMap="AnalysisRecordResultMap">
+        SELECT * FROM analysis_record 
+        WHERE dominant_expression = #{dominantExpression} 
+        ORDER BY analysis_date DESC
+    </select>
+    
+    <!-- 插入分析记录 -->
+    <insert id="insertRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO analysis_record (
+            image_url, 
+            analysis_date, 
+            happy_count, 
+            sad_count, 
+            anger_count, 
+            surprise_count, 
+            fear_count, 
+            neutral_count, 
+            disgust_count, 
+            contempt_count, 
+            sleepy_count, 
+            dominant_expression
+        ) VALUES (
+            #{imageUrl}, 
+            #{analysisDate}, 
+            #{happyCount}, 
+            #{sadCount}, 
+            #{angerCount}, 
+            #{surpriseCount}, 
+            #{fearCount}, 
+            #{neutralCount}, 
+            #{disgustCount}, 
+            #{contemptCount}, 
+            #{sleepyCount}, 
+            #{dominantExpression}
+        )
+    </insert>
+    
+    <!-- 删除分析记录 -->
+    <delete id="deleteRecord">
+        DELETE FROM analysis_record WHERE id = #{id}
+    </delete>
+    
+</mapper>

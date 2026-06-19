@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.face_recognition.mapper.UserMapper">
+    <resultMap id="userMap" type="com.lhy.face_recognition.entity.User">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="avatar" column="avatar" />
+        <result property="coverPhoto" column="cover_photo" />
+        <result property="bio" column="bio" />
+        <result property="followers" column="followers" />
+        <result property="following" column="following" />
+        <result property="likes" column="likes" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <select id="findByUsername" resultMap="userMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="findById" resultMap="userMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.lhy.face_recognition.entity.User">
+        INSERT INTO user (username, password)
+        VALUES (#{username}, #{password})
+    </insert>
+
+    <update id="update" parameterType="com.lhy.face_recognition.entity.User">
+        UPDATE user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="coverPhoto != null">cover_photo = #{coverPhoto},</if>
+            <if test="bio != null">bio = #{bio},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

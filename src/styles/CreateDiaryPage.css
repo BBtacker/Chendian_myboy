@@ -1,0 +1,478 @@
+/* CreateDiaryPage.css */
+/* 导入Google字体 */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
+
+.create-diary-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.create-diary-page h2 {
+  font-family: 'Fredoka', sans-serif;
+  color: #881337;
+  margin-bottom: 32px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.diary-form {
+  background-color: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.8s ease-out;
+}
+
+.form-section {
+  margin-bottom: 40px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.form-section h3 {
+  font-family: 'Fredoka', sans-serif;
+  color: #881337;
+  margin-bottom: 24px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 3px solid rgba(225, 29, 72, 0.15);
+  padding-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 12px;
+  color: #881337;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #FEE2E2;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.3s ease;
+  background-color: #FFFDFE;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #E11D48;
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+  background-color: white;
+  transform: translateY(-1px);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 200px;
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.6;
+}
+
+/* 心情选择样式 */
+.mood-options {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.mood-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border: 3px solid #FEE2E2;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #FFFDFE;
+  position: relative;
+  overflow: hidden;
+}
+
+.mood-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E11D48, #FB7185);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.mood-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: #E11D48;
+}
+
+.mood-option:hover::before {
+  transform: scaleX(1);
+}
+
+.mood-option.selected {
+  background: rgba(225, 29, 72, 0.08);
+  border-color: #E11D48;
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.15);
+}
+
+.mood-option.selected::before {
+  transform: scaleX(1);
+}
+
+.mood-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
+}
+
+.mood-option:hover .mood-icon {
+  transform: scale(1.1);
+}
+
+.mood-name {
+  font-size: 0.9rem;
+  color: #881337;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* 照片上传样式 */
+.photo-upload-section {
+  margin-top: 24px;
+}
+
+.photo-upload-area {
+  border: 3px dashed #FEE2E2;
+  border-radius: 16px;
+  padding: 48px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #FFFDFE;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-upload-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E11D48, #FB7185);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.photo-upload-area:hover {
+  border-color: #E11D48;
+  background-color: rgba(225, 29, 72, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.photo-upload-area:hover::before {
+  transform: scaleX(1);
+}
+
+.photo-input {
+  display: none;
+}
+
+.photo-upload-label {
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  color: #FB7185;
+  transition: transform 0.3s ease;
+}
+
+.photo-upload-area:hover .upload-icon {
+  transform: scale(1.1);
+}
+
+.photo-upload-label p {
+  margin: 8px 0;
+  color: #6B7280;
+  font-size: 1.125rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500;
+}
+
+.upload-hint {
+  font-size: 0.9rem !important;
+  color: #9CA3AF !important;
+  font-weight: 400 !important;
+}
+
+.photo-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.photo-item {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  animation: slideUp 0.6s ease-out;
+}
+
+.photo-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.05);
+}
+
+.delete-photo-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid #E11D48;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #E11D48;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.delete-photo-btn:hover {
+  background-color: #E11D48;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+}
+
+/* 表单操作按钮 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 2px solid #FEE2E2;
+  animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  min-width: 120px;
+}
+
+.cancel-btn {
+  background-color: #FEE2E2;
+  color: #881337;
+  border: 2px solid #FEE2E2;
+}
+
+.cancel-btn:hover {
+  background-color: #FECDD3;
+  border-color: #E11D48;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #E11D48, #FB7185);
+  color: white;
+  border-radius: 50px;
+  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.3);
+  font-weight: 600;
+  min-width: 160px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.45);
+}
+
+.submit-btn:disabled {
+  background: #D1D5DB;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .create-diary-page {
+    padding: 24px;
+  }
+  
+  .diary-form {
+    padding: 32px;
+  }
+  
+  .form-row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-diary-page {
+    padding: 16px;
+  }
+  
+  .create-diary-page h2 {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+  }
+  
+  .diary-form {
+    padding: 24px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .form-section {
+    margin-bottom: 32px;
+  }
+  
+  .form-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+  }
+  
+  .mood-options {
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .mood-option {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .mood-icon {
+    font-size: 2rem;
+  }
+  
+  .photo-upload-area {
+    padding: 32px 24px;
+  }
+  
+  .upload-icon {
+    font-size: 3rem;
+  }
+  
+  .photo-preview {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+  }
+  
+  .photo-item {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+  
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 14px 16px;
+  }
+  
+  .form-group textarea {
+    min-height: 150px;
+  }
+}

@@ -1,0 +1,277 @@
+/* SettingsPage.css */
+.settings-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.settings-header h2 {
+  color: #1e1b4b;
+  font-size: 28px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.settings-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.settings-content {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.09);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  padding: 24px;
+}
+
+.settings-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section-title {
+  color: #1e1b4b;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(99, 102, 241, 0.12);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.03), rgba(139,92,246,0.03));
+  border-radius: 10px;
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  transition: all 0.22s ease;
+}
+
+.setting-item:hover {
+  background: rgba(99, 102, 241, 0.06);
+  border-color: rgba(99, 102, 241, 0.18);
+}
+
+.setting-label {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 主题颜色选择器 */
+.theme-colors {
+  display: flex;
+  gap: 15px;
+}
+
+.color-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.color-option.active {
+  border-color: #333;
+  transform: scale(1.1);
+}
+
+.color-option .checkmark {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 字体大小选项 */
+.font-size-options {
+  display: flex;
+  gap: 10px;
+}
+
+.font-size-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: #333;
+}
+
+.font-size-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.font-size-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* 切换开关 */
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-label {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.toggle-label:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-label {
+  background-color: var(--primary-color);
+}
+
+input:focus + .toggle-label {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .toggle-label:before {
+  transform: translateX(30px);
+}
+
+/* 关于信息 */
+.about-info {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.05));
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.app-name {
+  font-size: 24px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.app-version {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.app-description {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.5;
+}
+
+/* 深色模式适配 */
+.dark-mode .settings-content {
+  background-color: #333;
+}
+
+.dark-mode .settings-section {
+  border-bottom-color: #444;
+}
+
+.dark-mode .setting-item {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode .setting-item:hover {
+  background-color: #555;
+}
+
+.dark-mode .setting-label {
+  color: #fff;
+}
+
+.dark-mode .section-title {
+  color: #fff;
+}
+
+.dark-mode .about-info {
+  background-color: #444;
+}
+
+.dark-mode .app-description {
+  color: #ccc;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 10px;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .theme-colors {
+    flex-wrap: wrap;
+  }
+  
+  .font-size-options {
+    flex-wrap: wrap;
+  }
+}
