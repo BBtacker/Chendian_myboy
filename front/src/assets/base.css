@@ -1,0 +1,149 @@
+/* ===== 医学主题设计变量 ===== */
+:root {
+  /* 主色调 - 医学青色 */
+  --med-primary: #0D7377;
+  --med-primary-light: #14A0A4;
+  --med-primary-dark: #095E61;
+  --med-primary-bg: rgba(13, 115, 119, 0.08);
+
+  /* 辅助色 - 医学蓝 */
+  --med-secondary: #1565C0;
+  --med-secondary-light: #1E88E5;
+
+  /* 强调色 - 薄荷绿 */
+  --med-accent: #32E0C4;
+
+  /* 语义色 */
+  --med-success: #27AE60;
+  --med-success-light: rgba(39, 174, 96, 0.12);
+  --med-warning: #F39C12;
+  --med-warning-light: rgba(243, 156, 18, 0.12);
+  --med-danger: #E74C3C;
+  --med-danger-light: rgba(231, 76, 60, 0.12);
+  --med-info: #2980B9;
+  --med-info-light: rgba(41, 128, 185, 0.12);
+
+  /* AI功能色 - 紫 */
+  --med-ai-purple: #7C4DFF;
+  --med-ai-purple-light: rgba(124, 77, 255, 0.12);
+
+  /* 侧边栏 */
+  --med-sidebar: #0A2342;
+  --med-sidebar-mid: #132F52;
+  --med-sidebar-light: #1A3A5C;
+  --med-sidebar-active: rgba(20, 160, 164, 0.2);
+  --med-sidebar-text: rgba(255, 255, 255, 0.65);
+  --med-sidebar-text-active: #32E0C4;
+
+  /* 背景 */
+  --med-bg: #F0F4F8;
+  --med-bg-card: #FFFFFF;
+  --med-bg-section: #EBF4F8;
+
+  /* 文字 */
+  --med-text: #2C3E50;
+  --med-text-secondary: #6B7E8E;
+  --med-text-muted: #95A5A6;
+
+  /* 边框 */
+  --med-border: #DEE5EE;
+  --med-border-light: #EDF2F7;
+
+  /* 阴影 */
+  --med-shadow-sm: 0 2px 8px rgba(10, 35, 66, 0.08);
+  --med-shadow-md: 0 4px 16px rgba(10, 35, 66, 0.12);
+  --med-shadow-lg: 0 8px 30px rgba(10, 35, 66, 0.15);
+
+  /* 圆角 */
+  --med-radius-sm: 8px;
+  --med-radius-md: 12px;
+  --med-radius-lg: 16px;
+  --med-radius-xl: 20px;
+}
+
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+
+  --vt-c-indigo: #2c3e50;
+
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+
+  --section-gap: 160px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

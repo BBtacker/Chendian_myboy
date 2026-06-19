@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.long67.facetest.mapper.StatisticsMapper">
+
+    <select id="getTotalTests" resultType="java.lang.Integer">
+        SELECT COUNT(*) 
+        FROM test_result 
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+    </select>
+
+    <select id="getGlandFaceCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) 
+        FROM test_result 
+        WHERE user_id = #{userId} AND is_gland_face = 1
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+    </select>
+    
+    <select id="getAverageConfidence" resultType="java.lang.Double">
+        SELECT AVG(probability)
+        FROM test_result
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+    </select>
+
+    <select id="getTrendData" resultType="java.util.HashMap">
+        SELECT 
+            DATE(test_time) as date,
+            COUNT(*) as total,
+            SUM(CASE WHEN is_gland_face = 1 THEN 1 ELSE 0 END) as glandFace
+        FROM test_result 
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+        GROUP BY DATE(test_time)
+        ORDER BY date
+    </select>
+
+    <select id="getLevelData" resultType="java.util.HashMap">
+        SELECT 
+            level as level,
+            COUNT(*) as count
+        FROM test_result 
+        WHERE user_id = #{userId} AND level IS NOT NULL AND level != ''
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+        GROUP BY level
+        ORDER BY count DESC
+    </select>
+
+    <select id="getDetailData" resultType="java.util.HashMap">
+        SELECT 
+            DATE(test_time) as date,
+            COUNT(*) as total,
+            SUM(CASE WHEN is_gland_face = 1 THEN 1 ELSE 0 END) as glandFace,
+            SUM(CASE WHEN is_gland_face = 0 THEN 1 ELSE 0 END) as nonGlandFace,
+            SUM(CASE WHEN level = '轻度' OR level = '轻微' THEN 1 ELSE 0 END) as light,
+            SUM(CASE WHEN level = '中度' OR level = '中等' THEN 1 ELSE 0 END) as moderate,
+            SUM(CASE WHEN level = '重度' OR level = '严重' THEN 1 ELSE 0 END) as severe
+        FROM test_result 
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND DATE(test_time) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(test_time) &lt;= #{endDate}
+        </if>
+        GROUP BY DATE(test_time)
+        ORDER BY date
+    </select>
+</mapper>
