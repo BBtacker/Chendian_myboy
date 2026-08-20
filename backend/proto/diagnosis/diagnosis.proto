@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+package diagnosis;
+option go_package = "faceTest/backend/proto/diagnosis";
+
+// 诊断服务
+service Diagnosis {
+  // 提交诊断任务（异步）
+  rpc SubmitDiagnosis(SubmitDiagnosisReq) returns (SubmitDiagnosisResp);
+  // 获取诊断结果
+  rpc GetDiagnosisResult(GetResultReq) returns (DiagnosisResultResp);
+  // 根据任务ID获取诊断状态
+  rpc GetTaskStatus(GetTaskStatusReq) returns (GetTaskStatusResp);
+  // 获取诊断历史列表
+  rpc ListDiagnosisResults(ListResultsReq) returns (ListResultsResp);
+  // 删除诊断结果
+  rpc DeleteDiagnosisResult(DeleteResultReq) returns (DeleteResultResp);
+  // 批量删除诊断结果
+  rpc BatchDeleteResults(BatchDeleteReq) returns (BatchDeleteResp);
+  // 更新诊断结果
+  rpc UpdateDiagnosisResult(UpdateResultReq) returns (UpdateResultResp);
+  // 获取统计数据
+  rpc GetStatistics(StatisticsReq) returns (StatisticsResp);
+  // 导出Excel
+  rpc ExportExcel(ExportReq) returns (ExportResp);
+  // 导出PDF
+  rpc ExportPDF(ExportReq) returns (ExportResp);
+}
+
+message SubmitDiagnosisReq {
+  int64 user_id = 1;
+  string image_path = 2;
+  string image_url = 3;
+  int32 age = 4;
+  int32 gender = 5;
+}
+
+message SubmitDiagnosisResp {
+  int64 code = 1;
+  string msg = 2;
+  int64 task_id = 3;
+  string task_no = 4;
+}
+
+message GetResultReq {
+  int64 result_id = 1;
+  int64 user_id = 2;
+}
+
+message DiagnosisResultResp {
+  int64 id = 1;
+  int64 task_id = 2;
+  int64 user_id = 3;
+  string image_path = 4;
+  string image_url = 5;
+  bool is_gland_face = 6;
+  string level = 7;
+  string visualization_description = 9;
+  string reference_cases = 10;
+  string test_time = 11;
+  string skipped_images = 12; // 多图诊断中被剔除（未检测到人脸）的图片路径 JSON 数组
+}
+
+message GetTaskStatusReq {
+  int64 task_id = 1;
+}
+
+message GetTaskStatusResp {
+  int64 task_id = 1;
+  string task_no = 2;
+  int32 status = 3;
+  int32 retry_count = 4;
+  string error_message = 5;
+}
+
+message ListResultsReq {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string start_date = 4;
+  string end_date = 5;
+  bool is_gland_face = 6;
+  bool has_filter = 7;
+  string level = 8;
+}
+
+message ListResultsResp {
+  int64 total = 1;
+  repeated DiagnosisResultResp records = 2;
+}
+
+message DeleteResultReq {
+  int64 result_id = 1;
+  int64 user_id = 2;
+}
+
+message DeleteResultResp {
+  int64 code = 1;
+  string msg = 2;
+}
+
+message BatchDeleteReq {
+  repeated int64 ids = 1;
+  int64 user_id = 2;
+}
+
+message BatchDeleteResp {
+  int64 code = 1;
+  string msg = 2;
+  int32 deleted_count = 3;
+}
+
+message UpdateResultReq {
+  int64 result_id = 1;
+  int64 user_id = 2;
+  string level = 3;
+  string visualization_description = 4;
+}
+
+message UpdateResultResp {
+  int64 code = 1;
+  string msg = 2;
+}
+
+message StatisticsReq {
+  int64 user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+}
+
+message StatisticsResp {
+  int64 total_tests = 1;
+  int64 gland_face_count = 2;
+  int64 non_gland_face_count = 3;
+  string trend_data = 5;
+  string level_data = 6;
+}
+
+message ExportReq {
+  int64 user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  bool is_gland_face = 4;
+  bool has_filter = 5;
+  string level = 6;
+}
+
+message ExportResp {
+  int64 code = 1;
+  string msg = 2;
+  bytes file_data = 3;
+  string filename = 4;
+}

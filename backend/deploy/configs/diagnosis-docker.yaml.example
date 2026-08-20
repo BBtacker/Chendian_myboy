@@ -1,0 +1,49 @@
+Name: diagnosis-service
+ListenOn: 0.0.0.0:8083
+Mode: dev
+
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: diagnosis.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(mysql:3306)/face?charset=utf8mb4&parseTime=true&loc=Local"
+
+RedisStore:
+  Host: redis:6379
+  Password: ""
+  DB: 0
+
+RabbitMQ:
+  URL: "amqp://admin:your-rabbitmq-password@rabbitmq:5672/"
+  Exchange: "diagnosis.exchange"
+  Queue: "diagnosis.queue"
+  DLXExchange: "diagnosis.dlx.exchange"
+  DLXQueue: "diagnosis.dlx.queue"
+  PrefetchCount: 1
+
+Milvus:
+  Address: "milvus:19530"
+
+DeepSeek:
+  APIKey: "sk-your-deepseek-api-key"
+  Model: "deepseek-v4-flash"
+
+FeatureExtractor:
+  URL: "http://feature-extractor:8085"
+  Timeout: 60
+  Enabled: true    # 模型已就位、feature-extractor 容器已启动，启用真实 EfficientNet-B3 特征提取
+
+UploadBasePath: "/app/uploads"
+
+Cache:
+  TTL: 3600
+
+Diagnosis:
+  MaxRetry: 5
+  RetryBaseDelay: 1
+
+Log:
+  Mode: console
+  Level: info

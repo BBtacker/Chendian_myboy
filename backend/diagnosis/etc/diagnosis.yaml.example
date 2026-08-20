@@ -1,0 +1,52 @@
+Name: diagnosis-service
+ListenOn: 0.0.0.0:8083
+Mode: dev
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: diagnosis.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(127.0.0.1:3307)/face?charset=utf8mb4&parseTime=true&loc=Local"
+
+RedisStore:
+  Host: 127.0.0.1:6380
+  Password: ""
+  DB: 0
+
+RabbitMQ:
+  URL: "amqp://admin:your-rabbitmq-password@127.0.0.1:5672/"
+  Exchange: "diagnosis.exchange"
+  Queue: "diagnosis.queue"
+  DLXExchange: "diagnosis.dlx.exchange"
+  DLXQueue: "diagnosis.dlx.queue"
+  PrefetchCount: 1
+
+Milvus:
+  Address: "127.0.0.1:19530"
+
+DeepSeek:
+  APIKey: "sk-your-deepseek-api-key"
+  Model: "deepseek-v4-flash"
+
+# 真实特征提取（EfficientNet-B3, Python 微服务）
+# 部署方法: cd feature_extractor && pip install -r requirements.txt && bash run.sh
+# 模型文件: feature_extractor/models/efficientnet_b3.onnx（获取方式见该目录 README）
+FeatureExtractor:
+  URL: "http://127.0.0.1:8085"
+  Timeout: 60
+  Enabled: true    # 已启动特征服务，启用真实 EfficientNet-B3 特征提取
+
+UploadBasePath: "./uploads"
+
+Cache:
+  TTL: 3600
+
+Diagnosis:
+  MaxRetry: 5
+  RetryBaseDelay: 1
+
+Log:
+  Mode: console
+  Level: info

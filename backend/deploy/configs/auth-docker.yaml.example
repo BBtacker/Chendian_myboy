@@ -1,0 +1,28 @@
+Name: auth-service
+ListenOn: 0.0.0.0:8081
+Mode: dev
+
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: auth.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(mysql:3306)/face?charset=utf8mb4&parseTime=true&loc=Local"
+
+Cache:
+  Host: redis:6379
+  Password: ""
+  DB: 0
+
+JWT:
+  Secret: "your-jwt-secret"
+  Expire: 72
+
+Upload:
+  BasePath: "./uploads"
+  BaseURL: "http://gateway-service:8080/uploads"
+
+Log:
+  Mode: console
+  Level: info

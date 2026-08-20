@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package upload;
+option go_package = "faceTest/backend/proto/upload";
+
+// 图像上传服务
+service Upload {
+  // 上传图片
+  rpc UploadImage(UploadImageReq) returns (UploadImageResp);
+  // 批量上传图片
+  rpc BatchUploadImages(BatchUploadReq) returns (BatchUploadResp);
+}
+
+message UploadImageReq {
+  bytes file_data = 1;
+  string filename = 2;
+  string content_type = 3;
+}
+
+message UploadImageResp {
+  int64 code = 1;
+  string msg = 2;
+  string image_path = 3;
+  string image_url = 4;
+  int64 file_size = 5;
+}
+
+message BatchUploadReq {
+  repeated UploadImageReq files = 1;
+}
+
+message BatchUploadResp {
+  int64 code = 1;
+  string msg = 2;
+  repeated UploadImageResp results = 3;
+}

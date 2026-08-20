@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package report;
+option go_package = "faceTest/backend/proto/report";
+
+// 报告生成服务
+service Report {
+  // 导出Excel报告
+  rpc ExportExcel(ExportReq) returns (ExportResp);
+  // 导出PDF报告
+  rpc ExportPDF(ExportReq) returns (ExportResp);
+  // 导出单条PDF报告
+  rpc ExportSinglePDF(SingleExportReq) returns (ExportResp);
+}
+
+message ExportReq {
+  int64 user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  bool is_gland_face = 4;
+  bool has_filter = 5;
+  string level = 6;
+}
+
+message SingleExportReq {
+  int64 result_id = 1;
+  int64 user_id = 2;
+}
+
+message ExportResp {
+  int64 code = 1;
+  string msg = 2;
+  bytes file_data = 3;
+  string filename = 4;
+  string content_type = 5;
+}

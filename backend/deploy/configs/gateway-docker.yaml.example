@@ -1,0 +1,56 @@
+Name: gateway-service
+Host: 0.0.0.0
+Port: 8080
+Mode: dev
+
+# 多图诊断同步轮询最长约 120s，必须大于此值否则被掐断返回 503
+Timeout: 180000
+
+CorsHeaders: "*"
+
+AuthRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: auth.rpc
+
+UploadRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: upload.rpc
+
+DiagnosisRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: diagnosis.rpc
+
+ReportRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: report.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(mysql:3306)/face?charset=utf8mb4&parseTime=True&loc=Local"
+
+Upload:
+  BasePath: "/app/uploads"
+  BaseURL: "http://gateway-service:8080/uploads"
+
+DeepSeek:
+  APIKey: "sk-your-deepseek-api-key"
+  Model: "deepseek-chat"
+
+Redis:
+  Host: redis:6379
+  Password: ""
+  DB: 0
+
+Log:
+  Mode: console
+  Level: info
+
+JWT:
+  Secret: "your-jwt-secret"

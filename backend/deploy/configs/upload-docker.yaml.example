@@ -1,0 +1,16 @@
+Name: upload-service
+ListenOn: 0.0.0.0:8082
+Mode: dev
+
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: upload.rpc
+
+Upload:
+  BasePath: "/app/uploads"
+  BaseURL: "http://gateway-service:8080/uploads"
+
+Log:
+  Mode: console
+  Level: info

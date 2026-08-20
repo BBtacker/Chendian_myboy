@@ -1,0 +1,295 @@
+services:
+  # ==================== 基础设施 ====================
+  
+  # MySQL 8.0
+  mysql:
+    image: mysql:8.0
+    container_name: facetest-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: your-mysql-password
+      MYSQL_DATABASE: face
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pyour-mysql-password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Redis 7
+  redis:
+    image: redis:7-alpine
+    container_name: facetest-redis
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # etcd (go-zero 服务注册发现)
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.15
+    container_name: facetest-etcd
+    restart: always
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - etcd_data:/etcd-data
+    command: >
+      etcd
+      --name facetest-etcd
+      --data-dir /etcd-data
+      --listen-client-urls http://0.0.0.0:2379
+      --advertise-client-urls http://etcd:2379
+      --listen-peer-urls http://0.0.0.0:2380
+      --initial-advertise-peer-urls http://etcd:2380
+      --initial-cluster facetest-etcd=http://etcd:2380
+      --initial-cluster-token facetest-cluster
+      --initial-cluster-state new
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ (消息队列)
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: facetest-rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: your-rabbitmq-password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # Milvus 依赖 - etcd for Milvus
+  milvus-etcd:
+    image: quay.io/coreos/etcd:v3.5.5
+    container_name: milvus-etcd
+    restart: always
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+      ETCD_SNAPSHOT_COUNT: "50000"
+    volumes:
+      - milvus_etcd_data:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Milvus 依赖 - MinIO
+  milvus-minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    container_name: milvus-minio
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - milvus_minio_data:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Milvus 向量数据库
+  milvus:
+    image: milvusdb/milvus:v2.4.0
+    container_name: facetest-milvus
+    restart: always
+    depends_on:
+      - milvus-etcd
+      - milvus-minio
+    environment:
+      ETCD_ENDPOINTS: milvus-etcd:2379
+      MINIO_ADDRESS: milvus-minio:9000
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    volumes:
+      - milvus_data:/var/lib/milvus
+    command: ["milvus", "run", "standalone"]
+    networks:
+      - facetest-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # ==================== 微服务 ====================
+
+  # 认证服务
+  auth-service:
+    build:
+      context: ..
+      dockerfile: deploy/dockerfiles/auth.Dockerfile
+    container_name: facetest-auth
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    networks:
+      - facetest-net
+
+  # 图像上传服务
+  upload-service:
+    build:
+      context: ..
+      dockerfile: deploy/dockerfiles/upload.Dockerfile
+    container_name: facetest-upload
+    restart: always
+    depends_on:
+      etcd:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    volumes:
+      - upload_data:/app/uploads
+    networks:
+      - facetest-net
+
+  # 特征提取服务（EfficientNet-B3）
+  # 注意: 需将 efficientnet_b3.onnx 放入 feature_extractor/models/ 目录后再构建
+  feature-extractor:
+    build:
+      context: ../feature_extractor
+      dockerfile: Dockerfile
+    container_name: facetest-feature-extractor
+    restart: always
+    ports:
+      - "8085:8085"
+    volumes:
+      - upload_data:/app/uploads
+      - ../feature_extractor/models:/app/models
+    networks:
+      - facetest-net
+
+  # 诊断服务
+  diagnosis-service:
+    build:
+      context: ..
+      dockerfile: deploy/dockerfiles/diagnosis.Dockerfile
+    container_name: facetest-diagnosis
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      milvus:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+      feature-extractor:
+        condition: service_started
+    ports:
+      - "8083:8083"
+    volumes:
+      - upload_data:/app/uploads
+    networks:
+      - facetest-net
+
+  # 报告生成服务
+  report-service:
+    build:
+      context: ..
+      dockerfile: deploy/dockerfiles/report.Dockerfile
+    container_name: facetest-report
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+    ports:
+      - "8084:8084"
+    networks:
+      - facetest-net
+
+  # API 网关
+  gateway-service:
+    build:
+      context: ..
+      dockerfile: deploy/dockerfiles/gateway.Dockerfile
+    container_name: facetest-gateway
+    restart: always
+    depends_on:
+      - auth-service
+      - upload-service
+      - diagnosis-service
+      - report-service
+    ports:
+      - "8080:8080"
+    volumes:
+      - upload_data:/app/uploads
+    networks:
+      - facetest-net
+
+networks:
+  facetest-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
+  etcd_data:
+  rabbitmq_data:
+  milvus_etcd_data:
+  milvus_minio_data:
+  milvus_data:
+  upload_data:

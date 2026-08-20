@@ -1,0 +1,17 @@
+Name: upload-service
+ListenOn: 0.0.0.0:8082
+Mode: dev
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: upload.rpc
+
+Upload:
+  BasePath: "./uploads"
+  BaseURL: "http://localhost:8080/uploads"
+  MaxFileSize: 10485760 # 10MB
+
+Log:
+  Mode: console
+  Level: info
