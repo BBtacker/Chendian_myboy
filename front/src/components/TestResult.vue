@@ -142,19 +142,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="confidence" label="置信度" min-width="110" align="center">
-          <template #default="scope">
-            <div v-if="scope.row.confidence !== null" class="confidence-cell">
-              <div class="confidence-bar-wrap">
-                <div class="confidence-bar-fill" :style="{ width: (scope.row.confidence * 100) + '%', background: getConfidenceColor(scope.row.confidence) }"></div>
-              </div>
-              <span :class="getConfidenceClass(scope.row.confidence)" class="confidence-text">
-                {{ (scope.row.confidence * 100).toFixed(1) }}%
-              </span>
-            </div>
-            <span v-else class="na-text">N/A</span>
-          </template>
-        </el-table-column>
 
         <el-table-column prop="createTime" label="检测时间" min-width="170" align="center" sortable>
           <template #default="scope">
@@ -205,23 +192,11 @@
         </el-form-item>
         <el-form-item label="严重程度" prop="level">
           <el-select v-model="editForm.level" placeholder="请选择严重程度" style="width: 100%;">
-            <el-option label="正常" value="正常" />
             <el-option label="轻度" value="轻度" />
-            <el-option label="中期" value="中期" />
+            <el-option label="中度" value="中度" />
             <el-option label="重度" value="重度" />
-            <el-option label="非腺体面容" value="非腺体面容" />
+            <el-option label="非腺样体面容" value="非腺样体面容" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="置信度" prop="confidence">
-          <el-input-number 
-            v-model="editForm.confidence" 
-            :min="0" 
-            :max="1" 
-            :step="0.01" 
-            :precision="2"
-            style="width: 100%;"
-          />
-          <div style="font-size: 12px; color: #909399; margin-top: 4px;">取值范围：0.00 - 1.00</div>
         </el-form-item>
         <el-form-item label="可视化描述" prop="visualizationDescription">
           <el-input 
@@ -266,13 +241,11 @@ export default {
       id: null,
       isGlandFace: false,
       level: '',
-      confidence: 0,
       visualizationDescription: ''
     })
     const editRules = {
       isGlandFace: [{ required: true, message: '请选择是否为腺体面容', trigger: 'change' }],
-      level: [{ required: true, message: '请选择严重程度', trigger: 'change' }],
-      confidence: [{ required: true, message: '请输入置信度', trigger: 'blur' }]
+      level: [{ required: true, message: '请选择严重程度', trigger: 'change' }]
     }
 
     const getResultList = async () => {
@@ -284,7 +257,7 @@ export default {
         if (filterForm.value.isGlandFace !== null) params.isGlandFace = filterForm.value.isGlandFace
         if (filterForm.value.level) params.level = filterForm.value.level
         const res = await request.get('/testResult/result', { params })
-        if (res.code === 1) { resultList.value = res.data.list || []; total.value = res.data.total || 0 }
+        if (res.code === 1) { resultList.value = res.data.records || []; total.value = res.data.total || 0 }
         else ElMessage.error(res.msg || '获取检测记录失败')
       } catch (e) { console.error(e); ElMessage.error('获取检测记录失败') }
       finally { loading.value = false }
@@ -360,18 +333,6 @@ export default {
       return 'info'
     }
 
-    const getConfidenceColor = (c) => {
-      if (c > 0.9) return 'var(--med-success)'
-      if (c > 0.7) return 'var(--med-warning)'
-      return 'var(--med-danger)'
-    }
-
-    const getConfidenceClass = (c) => {
-      if (c > 0.9) return 'conf-high'
-      if (c > 0.7) return 'conf-mid'
-      return 'conf-low'
-    }
-
     const getImageUrl = (path) => {
       if (!path) return ''
       if (path.startsWith('http')) return path
@@ -383,7 +344,6 @@ export default {
         id: row.id,
         isGlandFace: row.isGlandFace,
         level: row.level,
-        confidence: row.confidence || 0,
         visualizationDescription: row.visualizationDescription || ''
       }
       editDialogVisible.value = true
@@ -414,7 +374,7 @@ export default {
 
     onMounted(() => { getResultList() })
 
-    return { resultList, loading, downloading, downloadingPDF, currentPage, pageSize, total, filterForm, selectedResults, editDialogVisible, editFormRef, submitting, editForm, editRules, getResultList, handleSelectionChange, deleteSelectedResults, deleteResult, downloadResults, downloadResultsAsPDF, searchResults, resetFilter, handleSizeChange, handleCurrentChange, getLevelType, getConfidenceColor, getConfidenceClass, getImageUrl, openEditDialog, submitEdit }
+    return { resultList, loading, downloading, downloadingPDF, currentPage, pageSize, total, filterForm, selectedResults, editDialogVisible, editFormRef, submitting, editForm, editRules, getResultList, handleSelectionChange, deleteSelectedResults, deleteResult, downloadResults, downloadResultsAsPDF, searchResults, resetFilter, handleSizeChange, handleCurrentChange, getLevelType, getImageUrl, openEditDialog, submitEdit }
   }
 }
 </script>
@@ -498,25 +458,6 @@ export default {
   display: flex; align-items: center; justify-content: center;
   color: var(--med-text-muted); font-size: 24px;
 }
-
-/* 置信度 */
-.confidence-cell {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-}
-
-.confidence-bar-wrap {
-  width: 72px; height: 6px;
-  background: var(--med-border-light); border-radius: 3px; overflow: hidden;
-}
-
-.confidence-bar-fill {
-  height: 100%; border-radius: 3px; transition: width 0.4s ease;
-}
-
-.confidence-text { font-size: 13px; font-weight: 700; }
-.conf-high { color: var(--med-success); }
-.conf-mid { color: var(--med-warning); }
-.conf-low { color: var(--med-danger); }
 
 .time-cell { font-size: 13px; color: var(--med-text-secondary); }
 .na-text { font-size: 13px; color: var(--med-text-muted); }

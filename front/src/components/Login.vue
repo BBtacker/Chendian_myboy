@@ -42,7 +42,7 @@
             </div>
             <div>
               <div class="feature-name">精准可靠</div>
-              <div class="feature-desc">AI算法保障，识别准确率达78%</div>
+              <div class="feature-desc">几何测量 + 向量检索辅助，分级给出轻度/中度/重度/非腺样体面容</div>
             </div>
           </div>
         </div>

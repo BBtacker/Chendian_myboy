@@ -46,13 +46,18 @@
         <div class="stat-card-wave"></div>
       </div>
 
-      <div class="stat-card stat-card-orange">
+      <div class="stat-card stat-card-purple">
         <div class="stat-card-icon">
-          <el-icon :size="26" style="color: #F39C12;"><Star /></el-icon>
+          <el-icon :size="26" style="color: #7C4DFF;"><DataAnalysis /></el-icon>
         </div>
-        <div class="stat-card-body">
-          <div class="stat-card-value">{{ accuracyRate }}%</div>
-          <div class="stat-card-label">准确率</div>
+        <div class="stat-card-body" style="flex: 1; min-width: 0;">
+          <div class="stat-card-label" style="margin-bottom: 10px;">病情分布（DeepSeek 判定）</div>
+          <div class="tier-breakdown">
+            <span class="tier-item"><i class="tier-dot" style="background:#22c55e"></i>轻度 {{ lightCount }}</span>
+            <span class="tier-item"><i class="tier-dot" style="background:#eab308"></i>中度 {{ moderateCount }}</span>
+            <span class="tier-item"><i class="tier-dot" style="background:#ef4444"></i>重度 {{ severeCount }}</span>
+            <span class="tier-item"><i class="tier-dot" style="background:#06b6d4"></i>无面容 {{ noneCount }}</span>
+          </div>
         </div>
         <div class="stat-card-wave"></div>
       </div>
@@ -174,16 +179,19 @@
 import { ref, nextTick, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import request from '../utils/request'
-import { PieChart, Document, Warning, Check, Star, TrendCharts, DataAnalysis, Filter, Search, Refresh, List } from '@element-plus/icons-vue'
+import { PieChart, Document, Warning, Check, TrendCharts, DataAnalysis, Filter, Search, Refresh, List } from '@element-plus/icons-vue'
 
 export default {
   name: 'Statistics',
-  components: { PieChart, Document, Warning, Check, Star, TrendCharts, DataAnalysis, Filter, Search, Refresh, List },
+  components: { PieChart, Document, Warning, Check, TrendCharts, DataAnalysis, Filter, Search, Refresh, List },
   setup() {
     const totalTests = ref(0)
     const glandFaceCount = ref(0)
     const nonGlandFaceCount = ref(0)
-    const accuracyRate = ref(0)
+    const lightCount = ref(0)
+    const moderateCount = ref(0)
+    const severeCount = ref(0)
+    const noneCount = ref(0)
     const statisticsDetail = ref([])
     const trendChart = ref(null)
     const levelChart = ref(null)
@@ -204,7 +212,11 @@ export default {
           totalTests.value = d.totalTests || 0
           glandFaceCount.value = d.glandFaceCount || 0
           nonGlandFaceCount.value = d.nonGlandFaceCount || 0
-          accuracyRate.value = d.accuracyRate ? (d.accuracyRate * 100).toFixed(2) : 0
+          const ld = Array.isArray(d.levelData) ? d.levelData : []
+          lightCount.value = ld.find(i => i.level === '轻度')?.count || 0
+          moderateCount.value = ld.find(i => i.level === '中度')?.count || 0
+          severeCount.value = ld.find(i => i.level === '重度')?.count || 0
+          noneCount.value = ld.find(i => i.level === '非腺样体面容')?.count || 0
           await loadDetailStatistics()
           await nextTick()
           renderTrendChart(d.trendData || [])
@@ -244,7 +256,7 @@ export default {
     const renderLevelChart = (data) => {
       if (!levelChart.value) return
       if (!levelChartInstance) levelChartInstance = echarts.init(levelChart.value)
-      const colorMap = { '轻度': '#22c55e', '中期': '#eab308', '重度': '#ef4444', '正常': '#3b82f6', '非腺体面容': '#06b6d4', '非腺体': '#8b5cf6' }
+      const colorMap = { '轻度': '#22c55e', '中度': '#eab308', '重度': '#ef4444', '非腺样体面容': '#06b6d4' }
       levelChartInstance.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)', backgroundColor: '#fff', borderColor: '#DEE5EE', textStyle: { color: '#2C3E50' } },
         legend: { bottom: 0, textStyle: { color: '#6B7E8E' } },
@@ -265,7 +277,7 @@ export default {
 
     onMounted(() => { loadStatistics(); window.addEventListener('resize', handleResize) })
 
-    return { totalTests, glandFaceCount, nonGlandFaceCount, accuracyRate, statisticsDetail, trendChart, levelChart, filterForm, loadStatistics, resetFilter }
+    return { totalTests, glandFaceCount, nonGlandFaceCount, lightCount, moderateCount, severeCount, noneCount, statisticsDetail, trendChart, levelChart, filterForm, loadStatistics, resetFilter }
   }
 }
 </script>
@@ -333,9 +345,14 @@ export default {
 .stat-card-red .stat-card-icon { background: var(--med-danger-light); }
 .stat-card-green .stat-card-icon { background: var(--med-success-light); }
 .stat-card-orange .stat-card-icon { background: var(--med-warning-light); }
+.stat-card-purple .stat-card-icon { background: rgba(124, 77, 255, 0.12); }
 
 .stat-card-value { font-size: 28px; font-weight: 800; color: var(--med-text); line-height: 1; margin-bottom: 6px; }
 .stat-card-label { font-size: 13px; color: var(--med-text-muted); }
+
+.tier-breakdown { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.tier-item { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: var(--med-text); font-weight: 600; }
+.tier-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 
 .stat-card-wave {
   position: absolute; right: -10px; bottom: -10px;
@@ -347,6 +364,7 @@ export default {
 .stat-card-red .stat-card-wave { background: #E74C3C; }
 .stat-card-green .stat-card-wave { background: #27AE60; }
 .stat-card-orange .stat-card-wave { background: #F39C12; }
+.stat-card-purple .stat-card-wave { background: #7C4DFF; }
 
 /* 图表网格 */
 .charts-grid {
