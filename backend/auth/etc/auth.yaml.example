@@ -1,0 +1,28 @@
+Name: auth-service
+ListenOn: 0.0.0.0:8081
+Mode: dev
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: auth.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(127.0.0.1:3307)/face?charset=utf8mb4&parseTime=true&loc=Local"
+
+Cache:
+  Host: 127.0.0.1:6380
+  Password: ""
+  DB: 0
+
+JWT:
+  Secret: "your-jwt-secret"
+  Expire: 72 # 小时
+
+Upload:
+  BasePath: "./uploads"
+  BaseURL: "http://localhost:8080/uploads"
+
+Log:
+  Mode: console
+  Level: info

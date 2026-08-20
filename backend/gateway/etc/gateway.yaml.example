@@ -1,0 +1,57 @@
+Name: gateway-service
+Host: 0.0.0.0
+Port: 8080
+Mode: dev
+
+# 同步轮询诊断结果（多图最长约 120s），REST 服务器超时必须大于此值，否则被掐断返回 503
+Timeout: 180000
+
+# CORS配置
+CorsHeaders: "*"
+
+AuthRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: auth.rpc
+
+UploadRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: upload.rpc
+
+DiagnosisRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: diagnosis.rpc
+
+ReportRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: report.rpc
+
+MySQL:
+  DataSource: "root:your-mysql-password@tcp(127.0.0.1:3307)/face?charset=utf8mb4&parseTime=True&loc=Local"
+
+Upload:
+  BasePath: "./uploads"
+  BaseURL: "http://localhost:8080/uploads"
+
+DeepSeek:
+  APIKey: "sk-your-deepseek-api-key"
+  Model: "deepseek-chat"
+
+JWT:
+  Secret: "your-jwt-secret"
+
+Redis:
+  Host: 127.0.0.1:6380
+  Password: ""
+  DB: 0
+
+Log:
+  Mode: console
+  Level: info

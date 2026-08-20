@@ -1,0 +1,10 @@
+# Python 特征服务镜像通过 requirements.txt 重新安装依赖，不需要本地虚拟环境
+.venv/
+__pycache__/
+*.pyc
+
+# 模型文件（约几百 MB）通过卷挂载或构建时注入，不进构建上下文
+models/
+
+# 导出脚本仅开发期使用
+export_model.py
